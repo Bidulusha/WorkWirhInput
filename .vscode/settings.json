@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "vlobj.h": "c",
+        "queue.h": "c",
+        "stdio.h": "c"
+    }
+}

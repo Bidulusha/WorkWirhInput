@@ -1,6 +1,4 @@
-typedef struct{
-    short flag;
+typedef enum{
+    false,
+    true,
 }bool;
-
-static const bool false = {0};
-static const bool true = {1};
