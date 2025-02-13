@@ -1,10 +1,13 @@
 #include "../structures/Structures.h"
 #include <string.h>
 
-/*
-Это файл со всемы функциями структуры VlObjects
-This file contains all the functions of struct VlObjects
-*/
+
+typedef struct{ // struct LineObjects
+    Functions function;
+    Types type;
+} LineObjects;
+
+#define LO_INIT {NOFUNCTION, NOTYPE}
 
 LineObjects checkLines (char * line){
     LineObjects output = LO_INIT;
@@ -13,3 +16,4 @@ LineObjects checkLines (char * line){
     }
     return output;
 }
+

@@ -1,6 +1,6 @@
-#include "../Functions/VlFile.h" 
+#include "LineObject.h" 
 #include "../Functions/additional.h" 
-#include <cstdio>
+#include <stdio.h>
 #include <stdlib.h>
 
 typedef struct{
@@ -31,8 +31,9 @@ void updateVlFile(char * filename){
         puts("I can't find vl file, srr");
     }
     fclose(fp);
-    free(fp);
 
+    free(fp);
+    
     return lines;
 }
 
