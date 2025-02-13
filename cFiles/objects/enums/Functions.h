@@ -1,4 +1,4 @@
 typedef enum {
-    NOFUNCTION,
-    PRINt,
+    NOFUNCTION, // 0
+    PRINT, // 1
 } Functions;

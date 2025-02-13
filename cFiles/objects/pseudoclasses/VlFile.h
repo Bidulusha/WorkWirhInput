@@ -1,16 +1,15 @@
-#include "objects/Functions/VlFile.h" 
-#include "objects/Functions/additional.h" 
+#include "../Functions/VlFile.h" 
+#include "../Functions/additional.h" 
+#include <cstdio>
+#include <stdlib.h>
 
 typedef struct{
-    char * filename;
-    LineObjects * lines;
+    char * filename; // char * filename;
+    LineObjects * lines; // structe LineObjects * lines;
     void (*updateVlFile)(char * filename);
 }VlFile;
 
 void updateVlFile(char * filename){
-    
-    #include <cstdio>
-    #include <stdlib.h>
 
     LineObjects * lines = (LineObjects*)malloc(fileSize(filename) * sizeof(LineObjects));
 
@@ -37,11 +36,9 @@ void updateVlFile(char * filename){
     return lines;
 }
 
-
-
 /*
 Инициализаторы псевдо классов
 INIT for pseudo-classes
 */
 
-#define VlFIle_INIT {"newFile.vl", new LineObjects * lines, updateVlFile}
+#define VLFILE_INIT {"newFile.vl", malloc(sizeof(LineObjects)) , updateVlFile}

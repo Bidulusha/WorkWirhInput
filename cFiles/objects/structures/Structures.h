@@ -2,7 +2,7 @@
 #include "../enums/Functions.h"
 #include "Bool.h"
 
-typedef struct{
+typedef struct{ // struct LineObjects
     Functions function;
     Types type;
 } LineObjects;

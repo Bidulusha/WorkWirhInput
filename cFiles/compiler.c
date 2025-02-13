@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include "vlobj.h"
 
-
-
 int main(void){
-    editVlFile("newFile.vl");
-    
+    VlFile vlfile = VLFILE_INIT;
+
     return 0;
 }
