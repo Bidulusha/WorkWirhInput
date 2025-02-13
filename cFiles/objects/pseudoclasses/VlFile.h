@@ -1,5 +1,6 @@
-#include "LineObject.h" 
+#include "LineObjects.h" 
 #include "../Functions/additional.h" 
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,6 +9,18 @@ typedef struct{
     LineObjects * lines; // structe LineObjects * lines;
     void (*updateVlFile)(char * filename);
 }VlFile;
+
+/*
+Инициализаторы псевдо-классов
+INIT for pseudo-classes
+*/
+
+#define VLFILE_INIT {"newFile.vl", malloc(sizeof(LineObjects)) , updateVlFile}
+
+/*
+Функции для псевдо-класса
+functions for pseudo-class
+*/
 
 void updateVlFile(char * filename){
 
@@ -37,9 +50,3 @@ void updateVlFile(char * filename){
     return lines;
 }
 
-/*
-Инициализаторы псевдо классов
-INIT for pseudo-classes
-*/
-
-#define VLFILE_INIT {"newFile.vl", malloc(sizeof(LineObjects)) , updateVlFile}
