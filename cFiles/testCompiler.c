@@ -56,6 +56,12 @@ Node* create_keyboard_input_node(char key) {
     return node;
 }
 
+/*
+
+{} [] ()   : 
+
+*/
+
 // Функция для обработки файла
 Node* parse_file(const char* filename) {
     FILE* file = fopen(filename, "r");
@@ -73,7 +79,7 @@ Node* parse_file(const char* filename) {
 
         if (strcmp(command, "click") == 0) {
             int x, y;
-            fscanf(file, "%d %d", &x, &y);
+            fscanf(file, "(%d, %d)", &x, &y);
             new_node = create_mouse_click_node(x, y);
         } else if (strcmp(command, "wait") == 0) {
             int duration;

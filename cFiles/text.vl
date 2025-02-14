@@ -1,4 +1,9 @@
-click 100 200
-wait 5000
-type A
-click 150 250
+
+escape = EscapeTrigger
+fun main():
+    print('Hello visual language');
+    click();
+
+
+
+
