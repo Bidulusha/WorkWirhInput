@@ -35,8 +35,8 @@ void updateVlFile(char * filename){
         int i = 0;
         while((fgets(buffer, BUFFER_OF_LINE, fp))!=NULL)
         {
-            printf("%s\n", buffer);
-            lines[i] = checkLines(buffer);
+            //lines[i] = 
+            checkLines(buffer);
             i++;
         }
     } 

@@ -7,7 +7,9 @@
 #include <string.h>
 
 #define BUFFER_OF_LINE 256
+
 #define MERROR puts("Memory allocation failed"); exit(1);
+#define MWARNING puts("It's not exist");
 
 typedef struct{ // struct LineObjects
     Functions function;
@@ -36,41 +38,85 @@ $ - comment
 []
 */
 
-int findChar(char what, char *where) {
-    char temp[2] = {what, '\0'};
-    int ind = strstr(where, temp);
-    if (ind != NULL) {
-        return 0; // символ найден
-    }
-    return -1; // символ не найден
+char * gos(char str){ //getOneSymbol
+    char * new_str = (char*)malloc(1 *sizeof(char));
+    new_str[0] = str;
+    new_str[1] = '\0';
+    return new_str;
 }
+
+int findChar(char what, const char where[]) {
+    int i = 0;
+    while (i < strlen(where)) {
+        if (where[i] == what) {
+            //printf("where: %c\nwhat: %c\n ", where[i], what);
+            return 1;} // Найден
+        i++;
+    }
+    return 0; // Не найден
+}
+
+
+// int findChar(char what, const char *where) {
+//     char temp[2] = {what, '\0'};
+//     int ind = strstr(where, temp);
+//     if (ind != NULL) {
+//         return 0; // символ найден
+//     }
+//     return -1; // символ не найден
+// }
 
 QueueString split(char* line){
-    const char splits[] = {'(', ')', '{', '}', '[', ']', '$', '#'};
-    QueueString listofstrings;
+    const char splits[] = {'(', ')', '{', '}', '[', ']', '#', '\'', '\"', '\n', '$', '\0'};
+    QueueString listofstrings = QUEUEINT_STRING;
+
+    int countofspace = 0;
 
     char *temp = (char *)malloc(BUFFER_OF_LINE);
+    if (temp == NULL){ MERROR; }
+    temp[0] = '\0';
 
-    if (temp == NULL){
-        MERROR;
-    }
 
     for (int i = 0; i < strlen(line); i++){
-        if (findChar(line[i], splits) != -1){
-            strncat(temp, line[i], 1);
+        if (!findChar(line[i], splits)){
+            if (temp[0] == '\0' && line[i] == ' '){
+                countofspace++;
+                if (countofspace == 4){
+                    countofspace = 0;
+                    addToQueueString(&listofstrings, "\t");
+                }
+            }
+            else{
+                strncat(temp, &line[i], 1);
+                countofspace = 0;
+            }
         }
         else{
-            addToQueueString(&listofstrings, temp);
-            //addToQueueString(&listofstrings, line[i]);
-            free(temp);
-            char *temp = (char *)malloc(BUFFER_OF_LINE);
+            if (temp != NULL && temp[0] != '\0'){
+                addToQueueString(&listofstrings, temp);
+            }
+
+            temp[0] = '\0';
+            if (line[i] != '\n') addToQueueString(&listofstrings, gos(line[i]));
         }
     }
 
+    if (temp[0] != '\0') addToQueueString(&listofstrings, temp);
+
     free(temp);
-    printQueueString(&listofstrings);
     return listofstrings;
 }
+
+
+LineObjects checkLines (char * line){
+    LineObjects output = LO_INIT;
+    QueueString splitobjects = QUEUEINT_STRING;
+    splitobjects = split(line);
+    printQueueString(&splitobjects);
+    return output;
+}
+
+
 
 
 // char **split(char *line) {
@@ -104,13 +150,3 @@ QueueString split(char* line){
 
 //     return output;
 // }
-
-LineObjects checkLines (char * line){
-    LineObjects output = LO_INIT;
-    QueueString splitobjects;
-    for (int i = 0; i < strlen(line);i++){
-        split(line);
-    }
-    return output;
-}
-

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "bool.h"
 
 typedef struct QueueInt{
     int inf;
@@ -13,6 +14,12 @@ typedef struct QueueString{
     bool initialized;
     struct QueueString * next;
 } QueueString;
+
+typedef struct QueueQS{ // Queue what have QueueString
+    char * QueueString;
+    bool initialized;
+    struct QueueQS * next;
+} QueueQS;
 
 #define QUEUEINT_INIT {0, false, NULL}
 #define QUEUEINT_STRING {NULL, false, NULL}
@@ -46,9 +53,9 @@ void addToQueueString(QueueString *q, char *n) {
         printf("Ошибка выделения памяти\n");
         return;
     }
-
     // Копируем строку в новую область памяти
     newqueue->inf = strdup(n);  // strdup автоматически выделяет память и копирует строку
+
     if (!newqueue->inf) {
         printf("Ошибка выделения памяти под строку\n");
         free(newqueue);
@@ -78,21 +85,23 @@ Display functions
 void printQueueInt(QueueInt * q){
     QueueInt * lastq = q;
 
-    while (lastq != NULL)
-    {
-        printf("%i ", lastq->inf);
+    printf("[");
+    while (lastq != NULL) {
+        printf("\"%s\"", lastq->inf);
+        if (lastq->next) printf(", ");
         lastq = lastq->next;
     }
-    puts("\n");
+    printf("]\n");
 }
 
-void printQueueString(QueueString * q){
-    QueueString * lastq = q;
+void printQueueString(QueueString *q) {
+    QueueString *lastq = q;
 
-    while (lastq != NULL)
-    {
-        printf("%s ", lastq->inf);
+    printf("[");
+    while (lastq != NULL) {
+        printf("\"%s\"", lastq->inf);
+        if (lastq->next) printf(", ");
         lastq = lastq->next;
     }
-    puts("\n");
+    printf("]\n");
 }
