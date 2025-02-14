@@ -1,2 +1,3 @@
 #DEBUG
-print('Hello visual language!')
+fun main():
+    print('Hello visual language!') $ This is comment

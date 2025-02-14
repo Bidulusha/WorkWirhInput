@@ -2,7 +2,7 @@
 #include "../enums/Functions.h"
 #include "Bool.h"
 #include "../enums/TokenTypes.h"
-
+#include <stdlib.h>
 
 typedef struct Node {
     TokenType type;           // Тип узла
@@ -40,7 +40,7 @@ typedef struct Node {
 } Node;
 
 Node* create_mouse_click_node(int x, int y) {
-    Node* node = malloc(sizeof(Node));
+    Node* node = (Node*)malloc(sizeof(Node*));
     node->type = TOKEN_MOUSE_CLICK;
     node->mouse_click.x = x;
     node->mouse_click.y = y;

@@ -26,14 +26,14 @@ void updateVlFile(char * filename){
 
     LineObjects * lines = (LineObjects*)malloc(fileSize(filename) * sizeof(LineObjects));
 
-    char buffer[256];
+    char buffer[BUFFER_OF_LINE];
 
     //Read file
     FILE *fp = fopen(filename, "r");
     if(fp)
     {
         int i = 0;
-        while((fgets(buffer, 256, fp))!=NULL)
+        while((fgets(buffer, BUFFER_OF_LINE, fp))!=NULL)
         {
             printf("%s\n", buffer);
             lines[i] = checkLines(buffer);
@@ -45,8 +45,6 @@ void updateVlFile(char * filename){
     }
     fclose(fp);
 
-    free(fp);
-    
-    return lines;
+    free(lines);
 }
 

@@ -7,7 +7,6 @@ int main(void){
     
     vlfile.filename = "newFile.vl";
     vlfile.updateVlFile(vlfile.filename);
-    
 
     return 0;
 }
