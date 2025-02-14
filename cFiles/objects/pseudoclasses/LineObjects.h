@@ -67,10 +67,10 @@ int findChar(char what, const char where[]) {
 // }
 
 QueueString split(char* line){
-    const char splits[] = {'(', ')', '{', '}', '[', ']', '#', '\'', '\"', '\n', '$', '\0'};
+    const char splits[] = {' ','(', ')', '{', '}', '[', ']', '#', '\'', '\"', '\n', '$', '\0'};
     QueueString listofstrings = QUEUEINT_STRING;
 
-    int countofspace = 0;
+    bool openone = false;
 
     char *temp = (char *)malloc(BUFFER_OF_LINE);
     if (temp == NULL){ MERROR; }
@@ -79,25 +79,26 @@ QueueString split(char* line){
 
     for (int i = 0; i < strlen(line); i++){
         if (!findChar(line[i], splits)){
-            if (temp[0] == '\0' && line[i] == ' '){
-                countofspace++;
-                if (countofspace == 4){
-                    countofspace = 0;
-                    addToQueueString(&listofstrings, "\t");
+            strncat(temp, &line[i], 1);
+        }
+        else{
+            if (line[i] == '\'' || line[i] == '\"' || line[i] == '$'){
+                if (!openone) openone = true;
+                else openone = false;
+                addToQueueString(&listofstrings, gos(line[i]));
+            }
+
+            if(!openone){
+                if (temp != NULL && temp[0] != '\0'){
+                    addToQueueString(&listofstrings, temp);
                 }
+
+                temp[0] = '\0';
+                if (line[i] != '\n') addToQueueString(&listofstrings, gos(line[i]));
             }
             else{
                 strncat(temp, &line[i], 1);
-                countofspace = 0;
             }
-        }
-        else{
-            if (temp != NULL && temp[0] != '\0'){
-                addToQueueString(&listofstrings, temp);
-            }
-
-            temp[0] = '\0';
-            if (line[i] != '\n') addToQueueString(&listofstrings, gos(line[i]));
         }
     }
 
