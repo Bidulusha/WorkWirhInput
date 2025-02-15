@@ -23,7 +23,8 @@ functions for pseudo-class
 */
 
 void updateVlFile(char * filename){
-
+    SetConsoleCP(65001);    // Ввод
+    SetConsoleOutputCP(65001);  // Вывод
     LineObjects * lines = (LineObjects*)malloc(fileSize(filename) * sizeof(LineObjects));
 
     char buffer[BUFFER_OF_LINE];
@@ -35,7 +36,6 @@ void updateVlFile(char * filename){
         int i = 0;
         while((fgets(buffer, BUFFER_OF_LINE, fp))!=NULL)
         {
-            //lines[i] = 
             checkLines(buffer);
             i++;
         }

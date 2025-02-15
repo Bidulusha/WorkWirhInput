@@ -1,3 +1,5 @@
 #DEBUG
 fun main():
+    print$* just random comment *$('salam aleykum')
     print('Hello visual language!') $ This is comment
+    print('this is $* just random comment *$ bro wtf?')

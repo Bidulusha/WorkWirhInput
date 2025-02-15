@@ -7,7 +7,7 @@
 #include <string.h>
 
 #define BUFFER_OF_LINE 256
-
+#define BUFFER_SIZE(type) 256 * sizeof(type)
 
 
 
@@ -35,36 +35,83 @@ char * gos(char str){ //getOneSymbol
     return new_str;
 }
 
-int findFirstOccurrence(const char* str, const char* splits) {
-    const char* p = str;
-    while (*p) { // Проходим по строке до конца
-        const char* s = splits;
-        while (*s) { // Проходим по массиву символов разделителей
-            if (*p == *s) {
-                return p - str; // Возвращаем индекс первого вхождения
+int find(const char* str, const char* splits) {
+    for(int i = 0; i < strlen(str); i++){
+        for (int j = 0; j < strlen(splits); j++){
+            if (str[i] == splits[j]) {
+                return i;
             }
-            s++;
         }
-        p++;
     }
-    return -1; // Возвращаем -1, если не найдено
+    return -1;
 }
 
 int deleteFirstTabulation(char * str){
-    int count = 0;
-    char * s = str;
-    while((strstr(s,"\t"))){
-        count++;
+    int i = 0;
+    for(i; i < strlen(str) && str[i] == ' '; i++){}
+    if (i != 0){
+        str[0] = '\0';
+        strcat(str, &str[i]);
     }
-    
+    return i / 4;   
 }
 
 QueueString split(char* line){
-    const char splits[] = {' ','(', ')', '{', '}', '[', ']', '#', '\'', '\"', '\n', '$', '\0'};
+    const char splits[] = {',', ' ','(', ')', '{', '}', '[', ']', '#', '\'', '\"', '\n', '$', '\0'};
     QueueString listofstrings = QUEUESTRING_INIT;
-    printf("%s\n", line);
-    deleteFirstTabulation(line);
-    printf("%s\n", line);
+
+    int ind;
+    int tabcount = deleteFirstTabulation(line);
+
+    char * temp = (char*)malloc(BUFFER_SIZE(char*));
+    temp[0] = '\0';
+
+    for (int i = 0; i < strlen(line); i++){
+        if ((ind = find(gos(line[i]), splits)) != -1){
+            if (temp[0] != '\0'){
+                addToQueueString(&listofstrings, temp);
+                temp[0] = '\0';
+            }
+
+            if (line[i] == '$') {
+                if (i + 1 < strlen(line) && line[i + 1] != '*') {
+                    break;  // Не начало "$*", значит просто выходим
+                } else {
+                    i += 2;  // Пропускаем "$*"
+                    while (i < strlen(line) && !(line[i] == '$' && i - 1 >= 0 && line[i - 1] == '*')) {
+                        i++;
+                    }
+                    i++;
+                }
+            }
+
+            if (line[i] == '\'' || line[i] == '\"'){
+                addToQueueString(&listofstrings, gos(line[i]));
+                char openchar = line[i];
+                i++;
+                while(line[i] != openchar){
+                    strcat(temp, gos(line[i]));
+                    i++;
+                }
+
+                addToQueueString(&listofstrings, temp);
+                temp[0] = '\0';
+            }
+
+            if(line[i] != '\n' && line[i] != ' '){
+                addToQueueString(&listofstrings, gos(line[i]));
+            }
+        }
+        else{
+            strcat(temp, gos(line[i]));
+        }
+    }
+
+    if (temp[0] != '\0'){
+        addToQueueString(&listofstrings, temp);
+    }
+
+    free(temp);
 
     return listofstrings;
 }
@@ -75,5 +122,8 @@ LineObjects checkLines (char * line){
     QueueString splitobjects = QUEUESTRING_INIT;
     splitobjects = split(line);
     printQueueString(&splitobjects);
+    printf("get: %s\n", getString(&splitobjects));
+    printQueueString(&splitobjects);
+
     return output;
 }

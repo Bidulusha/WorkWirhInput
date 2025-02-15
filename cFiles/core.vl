@@ -1,10 +1,6 @@
-
-#if C_COMPILER $ Расмотреть вариант для обработки в C и в C# либо отказаться от этого
+$ #if C_COMPILER 
 fun print(text, end = '\n'):
     __c{
-        printf("%s\n", text); // КАКОЙ ТИП НУЖНО ЧЕКНУТЬ ЛИБО СДЕЛАТЬ ТАК, ЧТОБЫ ЛЮБОЙ ТИП СЧИТЫВАЛСЯ КАК char в C или string в CS
+        puts(strcat(text, end));
     }
-#else
-fun print(text, end = '\n'):
-    Console.log(text + end) $ Как вариант, чтобы оно выводило во внутреннюю консоль редактора
-#endif
+

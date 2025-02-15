@@ -103,3 +103,13 @@ void printQueueString(QueueString *q) {
     }
     printf("]\n");
 }
+
+char * getString(QueueString * q){
+    if (q == NULL) return "\0";
+    
+    char * newstr = q->inf;
+    q->inf = q->next->inf;
+    q->next = q->next->next;
+
+    return newstr;
+}
