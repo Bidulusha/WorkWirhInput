@@ -1,7 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "bool.h"
+#include "Bool.h"
+
+#define DEBUG_TEXT(text) puts("________DEBUG TEXT________"); printf("%s\n", text); 
+#define MERROR puts("Memory allocation failed"); exit(1);
+#define MWARNING puts("It's not exist");
 
 typedef struct QueueInt{
     int inf;
@@ -22,7 +26,7 @@ typedef struct QueueQS{ // Queue what have QueueString
 } QueueQS;
 
 #define QUEUEINT_INIT {0, false, NULL}
-#define QUEUEINT_STRING {NULL, false, NULL}
+#define QUEUESTRING_INIT {NULL, false, NULL}
 
 /*
 Функции добавление элементов в очередь
@@ -45,35 +49,29 @@ void addToQueueInt(QueueInt * q, int n){
     
 }
 
-void addToQueueString(QueueString *q, char *n) { 
-    QueueString *lastq = q;
-    QueueString *newqueue = (QueueString*)malloc(sizeof(QueueString));
-
-    if (!newqueue) {
-        printf("Ошибка выделения памяти\n");
-        return;
-    }
-    // Копируем строку в новую область памяти
-    newqueue->inf = strdup(n);  // strdup автоматически выделяет память и копирует строку
-
-    if (!newqueue->inf) {
-        printf("Ошибка выделения памяти под строку\n");
-        free(newqueue);
+void addToQueueString(QueueString *q, char * n) { 
+    if(q == NULL){
+        MWARNING
         return;
     }
 
+    QueueString * last = q;
+    QueueString  * newqueue = (QueueString*)malloc(sizeof(QueueString));
+
+    newqueue->inf = strdup(n);
+    newqueue->initialized = true;
     newqueue->next = NULL;
 
-    while (lastq->next != NULL) {
-        lastq = lastq->next;
+    while(last -> next != NULL){
+        last = last->next;
     }
 
-    if (lastq->initialized) {
-        lastq->next = newqueue;
-    } else {
-        q->inf = strdup(n); // Копируем строку в первый узел
+    if(q->initialized){
+        last->next = newqueue;
+    }
+    else{
+        q->inf = strdup(n);
         q->initialized = true;
-        free(newqueue); // Освобождаем ненужную структуру
     }
 }
 
@@ -87,7 +85,7 @@ void printQueueInt(QueueInt * q){
 
     printf("[");
     while (lastq != NULL) {
-        printf("\"%s\"", lastq->inf);
+        printf("\"%d\"", lastq->inf);
         if (lastq->next) printf(", ");
         lastq = lastq->next;
     }
