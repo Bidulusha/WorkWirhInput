@@ -121,9 +121,8 @@ LineObjects checkLines (char * line){
     LineObjects output = LO_INIT;
     QueueString splitobjects = QUEUESTRING_INIT;
     splitobjects = split(line);
-    printQueueString(&splitobjects);
-    printf("get: %s\n", getString(&splitobjects));
-    printQueueString(&splitobjects);
+
+    
 
     return output;
 }

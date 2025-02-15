@@ -20,6 +20,8 @@ int main(void){
     // Устанавливаем локаль для поддержки русских символов
     setlocale(LC_ALL, "ru_RU.UTF-8");
 
+    
+
     VlFile vlfile = VLFILE_INIT;
     
     vlfile.filename = "core.vl";

@@ -27,6 +27,7 @@ typedef struct QueueQS{ // Queue what have QueueString
 
 #define QUEUEINT_INIT {0, false, NULL}
 #define QUEUESTRING_INIT {NULL, false, NULL}
+#define QUEUEQS_INIT {NULL, false, NULL}
 
 /*
 Функции добавление элементов в очередь
@@ -102,6 +103,16 @@ void printQueueString(QueueString *q) {
         lastq = lastq->next;
     }
     printf("]\n");
+}
+
+char * getInt(QueueInt * q){
+    if (q == NULL) return "\0";
+    
+    int newnum = q->inf;
+    q->inf = q->next->inf;
+    q->next = q->next->next;
+
+    return newnum;
 }
 
 char * getString(QueueString * q){
