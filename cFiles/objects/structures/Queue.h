@@ -105,8 +105,8 @@ void printQueueString(QueueString *q) {
     printf("]\n");
 }
 
-char * getInt(QueueInt * q){
-    if (q == NULL) return "\0";
+int getInt(QueueInt * q){
+    if (q == NULL) return 0;
     
     int newnum = q->inf;
     q->inf = q->next->inf;
