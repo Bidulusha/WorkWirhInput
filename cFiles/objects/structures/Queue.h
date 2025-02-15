@@ -106,7 +106,11 @@ void printQueueString(QueueString *q) {
 }
 
 int getInt(QueueInt * q){
-    if (q == NULL) return 0;
+    if (q == NULL) {
+        puts("Queue is empty!");
+        q->initialized = false;
+        return 0;
+    }
     
     int newnum = q->inf;
     q->inf = q->next->inf;
@@ -116,7 +120,11 @@ int getInt(QueueInt * q){
 }
 
 char * getString(QueueString * q){
-    if (q == NULL) return "\0";
+    if (q == NULL) {
+        puts("Queue is empty!");
+        q->initialized = false;
+        return "\0";
+    }
     
     char * newstr = q->inf;
     q->inf = q->next->inf;
