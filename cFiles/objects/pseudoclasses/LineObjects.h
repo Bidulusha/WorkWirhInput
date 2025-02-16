@@ -122,7 +122,7 @@ LineObjects checkLines (char * line){
     QueueString splitobjects = QUEUESTRING_INIT;
     splitobjects = split(line);
 
-    
+    printQueueString(&splitobjects);
 
     return output;
 }

@@ -1,6 +1,1 @@
-$ #if C_COMPILER 
-fun print(text $*, end = '\n' *$):
-    __c{
-        puts(strcat(text, end));
-    }
-
+$ dead core
