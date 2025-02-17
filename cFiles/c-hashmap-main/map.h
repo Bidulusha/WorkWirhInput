@@ -10,46 +10,45 @@
 #define hashmap_str_lit(str) (str), sizeof(str) - 1
 #define hashmap_static_arr(arr) (arr), sizeof(arr)
 
-// removal of map elements is disabled by default because of its slight overhead.
-// if you want to enable this feature, uncomment the line below:
+// Удаление элементов map отключено по умолчанию из-за незначительных накладных расходов.
+// Если вы хотите включить эту функцию, раскомментируйте строку ниже:
 //#define __HASHMAP_REMOVABLE
 
 #include <stdint.h>
 #include <stddef.h>
 
-// hashmaps can associate keys with pointer values or integral types.
+// Хэш-maps могут ассоциировать ключи с указательными значениями или целочисленными типами.
 typedef struct hashmap hashmap;
 
-// a callback type used for iterating over a map/freeing entries:
-// `int <function name>(const void* key, size_t size, uintptr_t value, void* usr)`
-// `usr` is a user pointer which can be passed through `hashmap_iterate`.
+// Тип обратного вызова, используемый для итерации по map/освобождения записей:
+// int <имя функции>(const void* ключ, size_t размер, uintptr_t значение, void* usr)
+// usr — это указатель пользователя, который может быть передан через hashmap_iterate.
 typedef int (*hashmap_callback)(const void *key, size_t ksize, uintptr_t value, void *usr);
 
 hashmap* hashmap_create(void);
 
-// only frees the hashmap object and buckets.
-// does not call free on each element's `key` or `value`.
-// to free data associated with an element, call `hashmap_iterate`.
+// Освобождает только объект хэш-таблицы и корзины.
+// Не вызывает free для ключа или значения каждого элемента.
+// Чтобы освободить данные, связанные с элементом, вызовите hashmap_iterate.
 void hashmap_free(hashmap* map);
 
-// does not make a copy of `key`.
-// you must copy it yourself if you want to guarantee its lifetime,
-// or if you intend to call `hashmap_key_free`.
-// returns -1 on error.
+// Не создает копию ключа.
+// Вы должны скопировать его самостоятельно, если хотите гарантировать его срок службы,
+// или если планируете вызвать hashmap_key_free.
+// Возвращает -1 в случае ошибки.
 int hashmap_set(hashmap* map, const void* key, size_t ksize, uintptr_t value);
 
-// adds an entry if it doesn't exist, using the value of `*out_in`.
-// if it does exist, it sets value in `*out_in`, meaning the value
-// of the entry will be in `*out_in` regardless of whether or not
-// it existed in the first place.
-// returns -1 on error.
-// returns 1 if the entry already existed, returns 0 otherwise.
+// Добавляет запись, если она не существует, используя значение *out_in.
+// Если она существует, устанавливает значение в *out_in, что означает, что значение
+// записи будет в *out_in независимо от того, существовала ли она изначально.
+// Возвращает -1 в случае ошибки.
+// Возвращает 1, если запись уже существовала, возвращает 0 в противном случае.
 int hashmap_get_set(hashmap* map, const void* key, size_t ksize, uintptr_t* out_in);
 
-// similar to `hashmap_set()`, but when overwriting an entry,
-// you'll be able properly free the old entry's data via a callback.
-// unlike `hashmap_set()`, this function will overwrite the original key pointer,
-// which means you can free the old key in the callback if applicable.
+// Похоже на hashmap_set(), но при перезаписи записи
+// вы сможете правильно освободить данные старой записи через обратный вызов.
+// В отличие от hashmap_set(), эта функция перезапишет оригинальный указатель ключа,
+// что означает, что вы можете освободить старый ключ в обратном вызове, если это применимо.
 int hashmap_set_free(hashmap* map, const void* key, size_t ksize, uintptr_t value, hashmap_callback c, void* usr);
 
 int hashmap_get(hashmap* map, const void* key, size_t ksize, uintptr_t* out_val);
@@ -63,16 +62,16 @@ void hashmap_remove_free(hashmap* m, const void* key, size_t ksize, hashmap_call
 
 int hashmap_size(hashmap* map);
 
-// iterate over the map, calling `c` on every element.
-// goes through elements in the order they were added.
-// the element's key, key size, value, and `usr` will be passed to `c`.
-// if `c` returns -1 the iteration is aborted.
-// returns the last result of `c`
+// Итерация по карте, вызывая c для каждого элемента.
+// Проходит через элементы в порядке их добавления.
+// Ключ элемента, размер ключа, значение и usr будут переданы в c.
+// Если c возвращает -1, итерация прерывается.
+// Возвращает последний результат c
 int hashmap_iterate(hashmap* map, hashmap_callback c, void* usr);
 
-// dumps bucket info for debugging.
-// allows you to see how many collisions you are getting.
-// `0` is an empty bucket, `1` is occupied, and `x` is removed.
+// Выводит информацию о корзине для отладки.
+// Позволяет увидеть, сколько коллизий у вас возникает.
+// 0 — это пустая корзина, 1 — занятая, а x — удаленная.
 //void bucket_dump(hashmap *m);
 
 #endif // map_h

@@ -1,45 +1,7 @@
-#include "../enums/Types.h"
-#include "../enums/Functions.h"
-#include "Bool.h"
-#include "../enums/TokenTypes.h"
+#include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
-
-
-typedef struct Node {
-    TokenType type;           // Тип узла
-    union {
-        struct {
-            struct Node* statements; // Список операторов
-        } program;
-
-        struct {
-            struct Node* next;       // Следующий оператор
-            struct Node* action;     // Действие (например, клик мыши)
-        } statement;
-
-        struct {
-            int value;               // Числовое значение
-        } number;
-
-        struct {
-            char* name;              // Имя идентификатора
-        } identifier;
-
-        struct {
-            int x;                   // Координаты для клика мыши
-            int y;
-        } mouse_click;
-
-        struct {
-            char key;                // Клавиша для ввода
-        } keyboard_input;
-
-        struct {
-            int duration;            // Время ожидания
-        } timeout;
-    };
-} Node;
-
+#include <string.h>
 
 typedef struct {
     void *data;          // Указатель на данные
@@ -54,7 +16,7 @@ void vector_init(Vector *vec, size_t element_size) {
     vec->capacity = 0;
 }
 
-// Функция для создания нового вектора
+// chatgpt  хз мб рабоает
 Vector* vector_create(size_t element_size) {
     Vector *vec = (Vector *)malloc(sizeof(Vector));
     if (vec == NULL) {
@@ -75,7 +37,7 @@ Vector* vector_create(size_t element_size) {
 
 
 
-int new(int vs) { 
+int neww(int vs) { 
     if (vs < 8) {
         return 4;
     } else if (vs < 16) {
@@ -86,7 +48,7 @@ int new(int vs) {
 }
 
 void vector_resize(Vector *vec) {
-    vec->capacity *= new(vec->size);
+    vec->capacity *= neww(vec->size);
     vec->data = realloc(vec->data, vec->capacity * vec->element_size);
     if (vec->data == NULL) {
         perror("ERROR 142");
@@ -95,7 +57,8 @@ void vector_resize(Vector *vec) {
 }
 
 void vector_push_back(Vector *vec, void *element) {
-    if (vec->size >= vec->capacity) {
+
+    if (vec->size >= vec->capacity && vec->data == NULL) {
         vector_resize(vec);
     }
     memcpy((char*)vec->data + (vec->size * vec->element_size), element, vec->element_size);
