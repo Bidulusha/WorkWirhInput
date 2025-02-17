@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../structures/Queue.h"
 #include "../enums/Functions.h"
 #include "../enums/Types.h"
@@ -7,9 +9,7 @@
 #include <string.h>
 
 #define BUFFER_OF_LINE 256
-#define BUFFER_SIZE(type) 256 * sizeof(type)
-
-
+#define BUFFER_SIZE(type) BUFFER_OF_LINE * sizeof(type)
 
 typedef struct{ // struct LineObjects
     Functions function;
