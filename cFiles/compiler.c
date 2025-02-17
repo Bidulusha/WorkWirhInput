@@ -5,6 +5,7 @@
 #include <windows.h>
 
 #include "vlobj.h"
+#include "c-hashmap-main/map.c"
 
 #define typeof(x) _Generic((x), \
     int: "int", \
