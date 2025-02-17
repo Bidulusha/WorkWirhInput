@@ -13,7 +13,7 @@
 
 #endif
 
-void print(const char *text, const char end) {
+void print(const char *text, const char * end) {
     write(1, text, strlen(text));
     write(1, end, strlen(end));  
 }
@@ -61,7 +61,7 @@ int main(void){
     addToQueuePairts(&functions_memory, temp);
     printQueuePairts(&functions_memory);
 
-    write(1, "Idi nahuy\n", strlen("ini nahuy\n"));
+    println("Hello print");
 
     return 0;
 }
