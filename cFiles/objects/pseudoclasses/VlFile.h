@@ -25,8 +25,11 @@ functions for pseudo-class
 */
 
 void updateVlFile(char * filename){
+    #ifdef _WIN32
     SetConsoleCP(65001);    // Ввод
     SetConsoleOutputCP(65001);  // Вывод
+    #endif
+
     LineObjects * lines = (LineObjects*)malloc(fileSize(filename) * sizeof(LineObjects));
 
     char buffer[BUFFER_OF_LINE];

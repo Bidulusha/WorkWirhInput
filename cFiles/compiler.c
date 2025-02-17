@@ -13,17 +13,8 @@
 
 #endif
 
-void print(const char *text, const char * end) {
-    write(1, text, strlen(text));
-    write(1, end, strlen(end));  
-}
-
-void println(const char *text) {
-    print(text, "\n");  
-}
-
+#include "objects/Functions/additional.h"
 #include "vlobj.h"
-#include "c-hashmap-main/map.c"
 
 #define typeof(x) _Generic((x), \
     int: "int", \
@@ -34,8 +25,10 @@ void println(const char *text) {
 
 
 int main(void){
+    #ifdef _WIN32
     SetConsoleCP(65001);    // Ввод
     SetConsoleOutputCP(65001);  // Вывод
+    #endif
 
     // Устанавливаем локаль для поддержки русских символов
     setlocale(LC_ALL, "ru_RU.UTF-8");
@@ -56,12 +49,20 @@ int main(void){
     */
     //hashmap* memoryFunctrion = hashmap_create();
     QueuePairts functions_memory = QUEUEPTS_INIT;
+
     printQueuePairts(&functions_memory);
+    
     Pairts temp = {TYPE_INT, "12"};
+    
     addToQueuePairts(&functions_memory, temp);
     printQueuePairts(&functions_memory);
 
-    println("Hello print");
+
+    temp = getPairts(&functions_memory);
+    printQueuePairts(&functions_memory);
+
+    printf("(%s, %s)\n", get_name(temp.first), temp.second);
+    clearstd;
 
     return 0;
 }

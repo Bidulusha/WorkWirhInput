@@ -178,8 +178,14 @@ int getInt(QueueInt * q){
     }
     
     int newnum = q->inf;
-    q->inf = q->next->inf;
-    q->next = q->next->next;
+    if (q->next != NULL){
+        q->inf = q->next->inf;
+        q->next = q->next->next;
+    }
+    else{ 
+        q->inf = 0;
+        q->initialized = false;
+    }
 
     return newnum;
 }
@@ -192,8 +198,14 @@ char * getString(QueueString * q){
     }
     
     char * newstr = q->inf;
-    q->inf = q->next->inf;
-    q->next = q->next->next;
+    if (q->next != NULL){
+        q->inf = q->next->inf;
+        q->next = q->next->next;
+    }
+    else{ 
+        q->inf = NULL;
+        q->initialized = false;
+    }
 
     return newstr;
 }
@@ -205,10 +217,16 @@ Pairts getPairts(QueuePairts * q){
         Pairts newpair = {TYPE_NOTYPE, NULL};
         return newpair;
     }
-    
-    Pairts newpair = q->inf;
-    q->inf = q->next->inf;
-    q->next = q->next->next;
 
+    Pairts newpair = q->inf;
+    if (q->next != NULL){
+        q->inf = q->next->inf;
+        q->next = q->next->next;
+    }
+    else{
+        Pairts temp = {TYPE_NOTYPE, NULL}; 
+        q->inf = temp;
+        q->initialized = false;
+    }
     return newpair;
 }
