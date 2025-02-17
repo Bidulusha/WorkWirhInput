@@ -1,3 +1,7 @@
+#pragma once
+
+#include "../enums/Types.h"
+
 typedef struct {
     int first;
     int second;
@@ -17,3 +21,10 @@ typedef struct{
     char * first;
     char * second;
 } Pairss;
+
+typedef struct{
+    VariablesTypes first;
+    char * second;
+} Pairts;
+
+#define PAIRTS_NOPAIRTS {TYPE_NOTYPE, NULL}
