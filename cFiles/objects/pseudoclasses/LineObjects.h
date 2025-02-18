@@ -3,6 +3,8 @@
 #include "../structures/Queue.h"
 #include "../enums/Functions.h"
 #include "../enums/Types.h"
+#include "../Functions/additional.h"
+
 /*
     Сделать файлы конфигурации для записи includes
 */
@@ -47,13 +49,13 @@ int find(const char* str, const char* splits) {
 }
 
 int deleteFirstTabulation(char * str){
-    int i = 0;
-    for(i; i < strlen(str) && str[i] == ' '; i++){}
-    if (i != 0){
+    int temp;
+    for(int i = 0; i < strlen(str) && str[i] == ' '; i++){temp++;}
+    if (temp != 0){
         str[0] = '\0';
-        strcat(str, &str[i]);
+        strcat(str, &str[temp]);
     }
-    return i / 4;   
+    return temp / 4;   
 }
 
 QueueString split(char* line){
@@ -62,6 +64,7 @@ QueueString split(char* line){
 
     int ind;
     int tabcount = deleteFirstTabulation(line);
+    puts("12");
 
     char * temp = (char*)malloc(BUFFER_SIZE(char*));
     temp[0] = '\0';

@@ -16,13 +16,6 @@
 #include "objects/Functions/additional.h"
 #include "vlobj.h"
 
-#define typeof(x) _Generic((x), \
-    int: "int", \
-    float: "float", \
-    double: "double", \
-    char*: "char*", \
-    default: "unknown")
-
 
 int main(void){
     #ifdef _WIN32

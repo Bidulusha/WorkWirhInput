@@ -1,4 +1,12 @@
 #pragma once
+#include <string.h>
+
+#define typeof(x) _Generic((x), \
+    int: "int", \
+    float: "float", \
+    double: "double", \
+    char*: "char*", \
+    default: "unknown")
 
 #define clearstd fflush(stdout)
 
@@ -24,12 +32,13 @@ unsigned int fileSize(char * filename){
     return count;
 }
 
-
-void print(const char *text, const char * end) {
+void _print(const char *text, const char * end) {
     write(1, text, strlen(text));
     write(1, end, strlen(end));  
 }
 
-void println(const char *text) {
+void _println(const char *text) {
     print(text, "\n");  
 }
+
+//#define print(text) _print(text, "\n")
