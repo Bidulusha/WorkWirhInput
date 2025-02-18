@@ -30,13 +30,6 @@ INIT for pseudo-classes
 functions for pseudo-class
 */
 
-char * gos(char str){ //getOneSymbol
-    char * new_str = (char*)malloc(2 * sizeof(char));
-    new_str[0] = str;
-    new_str[1] = '\0';
-    return new_str;
-}
-
 int find(const char* str, const char* splits) {
     for(int i = 0; i < strlen(str); i++){
         for (int j = 0; j < strlen(splits); j++){

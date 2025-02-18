@@ -3,6 +3,7 @@
         "vlobj.h": "c",
         "queue.h": "c",
         "stdio.h": "c",
-        "stddef.h": "c"
+        "stddef.h": "c",
+        "cmath": "cpp"
     }
 }
