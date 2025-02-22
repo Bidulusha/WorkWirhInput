@@ -35,10 +35,17 @@ typedef struct QueuePairts{
     struct QueuePairts * next; 
 } QueuePairts;
 
+typedef struct QueuePairspts{
+    Pairspts inf;
+    bool initialized;
+    struct QueuePairspts * next; 
+} QueuePairspts;
+
 #define QUEUEINT_INIT {0, false, NULL}
 #define QUEUESTRING_INIT {NULL, false, NULL}
 #define QUEUEQS_INIT {NULL, false, NULL}
 #define QUEUEPTS_INIT {PAIRTS_NOPAIRTS, false, NULL}
+#define QUEUEPSS_INIT {PAIRSS_NOPAIRSS, false, NULL,}
 
 /*
 Функции добавление элементов в очередь
@@ -112,6 +119,25 @@ void addToQueuePairts(QueuePairts *q, Pairts n) {
     else {q->inf = n; q->initialized = true;}
 }
 
+void addToQueuePairspts(QueuePairspts *q, Pairspts n) { 
+    if(q == NULL){
+        MWARNING
+        return;
+    }
+
+    QueuePairss * lastq = q;
+    QueuePairss * newqueue = (QueuePairspts*)malloc(sizeof(QueuePairss));
+    newqueue->inf = n;
+    newqueue->next = NULL;
+    
+    while (lastq->next != NULL)
+    {
+        lastq = lastq->next;
+    }
+
+    if (lastq->initialized != false) {lastq->next = newqueue;}    
+    else {q->inf = n; q->initialized = true;}
+}
 /*
 Функции для отображения
 Display functions
@@ -159,6 +185,22 @@ void printQueuePairts(QueuePairts *q) {
     printf("[");
     while (lastq != NULL) {
         printf("(%s , \"%s\")", get_name(lastq->inf.first), lastq->inf.second);
+        if (lastq->next) printf(", ");
+        lastq = lastq->next;
+    }
+    printf("]\n");
+}
+
+void printQueuePairss(QueuePairss *q) {
+    if (!q->initialized){
+        puts("[]");
+        return;
+    }
+    
+    QueuePairss *lastq = q;
+    printf("[");
+    while (lastq != NULL) {
+        printf("(%s , \"%s\")", lastq->inf.first, lastq->inf.second);
         if (lastq->next) printf(", ");
         lastq = lastq->next;
     }
@@ -225,6 +267,27 @@ Pairts getPairts(QueuePairts * q){
     }
     else{
         Pairts temp = {TYPE_NOTYPE, NULL}; 
+        q->inf = temp;
+        q->initialized = false;
+    }
+    return newpair;
+}
+
+Pairss getPairss(QueuePairss * q){
+    if (q == NULL) {
+        puts("Queue is not exists!");
+        q->initialized = false;
+        Pairss newpair = {NULL, NULL};
+        return newpair;
+    }
+
+    Pairss newpair = q->inf;
+    if (q->next != NULL){
+        q->inf = q->next->inf;
+        q->next = q->next->next;
+    }
+    else{
+        Pairss temp = {NULL, NULL}; 
         q->inf = temp;
         q->initialized = false;
     }

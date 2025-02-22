@@ -4,6 +4,7 @@
         "queue.h": "c",
         "stdio.h": "c",
         "stddef.h": "c",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "math.h": "c"
     }
 }

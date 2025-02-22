@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <locale.h>
-#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <math.h>
 
 #ifdef _WIN32
 #include <conio.h>
@@ -14,6 +17,7 @@
 #endif
 
 #include "objects/Functions/additional.h"
+#include "objects/structures/Queue.h"
 #include "vlobj.h"
 
 
@@ -36,7 +40,7 @@ int main(void){
 
     vlfile.filename = "newFile.vl";
     vlfile.updateVlFile(vlfile.filename);
-    
+
     /*
     
     */
@@ -44,18 +48,9 @@ int main(void){
     QueuePairts functions_memory = QUEUEPTS_INIT;
 
     printQueuePairts(&functions_memory);
-    
-    Pairts temp = {TYPE_INT, "12"};
-    
-    addToQueuePairts(&functions_memory, temp);
-    printQueuePairts(&functions_memory);
 
-
-    temp = getPairts(&functions_memory);
-    printQueuePairts(&functions_memory);
-
-    printf("(%s, %s)\n", get_name(temp.first), temp.second);
-    clearstd;
+    QueuePairss tempp = QUEUEPSS_INIT;
+    printQueuePairss(&tempp);
 
     return 0;
 }

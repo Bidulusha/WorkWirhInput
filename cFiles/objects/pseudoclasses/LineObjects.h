@@ -42,11 +42,12 @@ int find(const char* str, const char* splits) {
 }
 
 int deleteFirstTabulation(char * str){
-    int temp;
+    int temp = 0;
+    char * strtemp = strdup(str);
     for(int i = 0; i < strlen(str) && str[i] == ' '; i++){temp++;}
     if (temp != 0){
         str[0] = '\0';
-        strcat(str, &str[temp]);
+        strcat(str, &strtemp[temp - 1]);
     }
     return temp / 4;   
 }
@@ -57,7 +58,6 @@ QueueString split(char* line){
 
     int ind;
     int tabcount = deleteFirstTabulation(line);
-    puts("12");
 
     char * temp = (char*)malloc(BUFFER_SIZE(char*));
     temp[0] = '\0';
@@ -117,8 +117,12 @@ LineObjects checkLines (char * line){
     LineObjects output = LO_INIT;
     QueueString splitobjects = QUEUESTRING_INIT;
     splitobjects = split(line);
-
     printQueueString(&splitobjects);
+
+    while(splitobjects.initialized){
+        char * obj = getString(&splitobjects);
+        
+    }
 
     return output;
 }

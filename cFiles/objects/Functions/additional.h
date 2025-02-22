@@ -2,7 +2,9 @@
 
 #include <stdio.h>
 #include <locale.h>
-#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include <math.h>
 
 #ifdef _WIN32
@@ -15,7 +17,6 @@
 #include <unistd.h>
 
 #endif
-#include <string.h>
 
 #define typeof(x) _Generic((x), \
     int: "int", \
@@ -33,9 +34,30 @@ char * gos(char str){ //getOneSymbol
     return new_str;
 }
 
-unsigned int fileSize(char * filename){
-    
+/*
+Целочисленное в строку
+Int to string
+*/
 
+char * intToString(int n){
+    int temp = n, size = 1;
+    while(temp){temp /= 10; size += 1;}
+
+    char * new = (char*)malloc((size) * sizeof(char));
+    new[0] = '\0';
+
+    size -= 2;
+
+    while(n){
+        strcat(new, gos(48 + n / ((int)pow(10, size))));
+        n %= ((int)pow(10,size));
+        size -= 1;
+    }
+
+    return new;
+}
+
+unsigned int fileSize(char * filename){
     char buffer[256];
     int count = 0;
 
@@ -55,29 +77,20 @@ unsigned int fileSize(char * filename){
     return count;
 }
 
-void _print(const char *text, const char * end) {
+void print(const char *text, const char * end) {
     write(1, text, strlen(text));
     write(1, end, strlen(end));  
 }
 
-void _println(const char *text) {
-    print(text, "\n");  
-}
-
-char * intToString(int n){
-    int temp = n, size = 1;
-    while(temp){temp /= 10; size += 1;}
-
-    char * new = (char*)malloc((size) * sizeof(char));
-    new[0] = '\0';
-
-    size -= 2;
-
-    while(n){
-        strcat(new, gos(48 + n / ((int)pow(10, size))));
-        n %= ((int)pow(10,size));
-        size -= 1;
+void iprint(int text, const char * end){
+    int i = 0, temp = text;
+    while (temp){
+        temp /= 10;
+        i++;
     }
-
-    return new;
+    write(1, intToString(text), i);
+    write(1, end, strlen(end));  
 }
+
+#define println(text) print(text, "\n")
+#define iprintln(text) iprint(text, "\n")

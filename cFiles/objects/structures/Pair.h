@@ -18,13 +18,14 @@ typedef struct {
 } Pairsi;
 
 typedef struct{
-    char * first;
-    char * second;
-} Pairss;
-
-typedef struct{
     VariablesTypes first;
     char * second;
 } Pairts;
 
+typedef struct{
+    char * first;
+    Pairts second;
+} Pairspts;
+
 #define PAIRTS_NOPAIRTS {TYPE_NOTYPE, NULL}
+#define PAIRSS_NOPAIRSS {NULL, NULL}
