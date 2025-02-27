@@ -2,15 +2,18 @@
 #include <string.h>
 #include <stdlib.h>
 
-unsigned long long step(int a, int b){
-    long long sum = 1;
-    for (int i = 0; i < b; i++){
-        sum *= a;
-    }
-    return sum;
-}
+#include "objects/structures/Queue.h"
 
 int main(void){
-    printf("%d", (step(62, 12) * sizeof("z")) / 1024);
-    return 0;
+    QueueInt first = QUEUEINT_INIT;
+    
+    first.print(&first);
+    first.add(&first, 12);
+    first.print(&first);
+
+    for (int i = 0; i < 10; i++){
+        first.add(&first, i);
+        first.print(&first);
+    }
+
 }

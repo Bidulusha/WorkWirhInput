@@ -6,6 +6,7 @@
 
 #include "Bool.h"
 #include "Pair.h"
+#include "../Functions/additional.h"
 
 #define DEBUG_TEXT(text) puts("________DEBUG TEXT________"); printf("%s\n", text); 
 #define MERROR puts("Memory allocation failed"); exit(1);
@@ -13,39 +14,55 @@
 
 typedef struct QueueInt{
     int inf;
-    bool initialized;
     struct QueueInt * next;
+    struct QueueInt * last;
+
+    void (*print)(struct QueueInt * thisObject);
+    void (*add)(struct QueueInt * thisObject, int number);
+
 } QueueInt;
 
 typedef struct QueueString{
     char * inf;
-    bool initialized;
     struct QueueString * next;
+    struct QueueString * last;
+
+    void (*print)(struct QueueString * text);
+
 } QueueString;
 
-typedef struct QueueQS{ // Queue what have QueueString
+typedef struct QueueQueueString{ // Queue what has QueueString
     char * QueueString;
-    bool initialized;
     struct QueueQS * next;
-} QueueQS;
+    struct QueueQueueString * last;
 
-typedef struct QueuePairts{
-    Pairts inf;
-    bool initialized;
+    void (*print)(struct QueueQueueString * text);
+
+} QueueQueueString;
+
+typedef struct QueuePairts{ // Queue what has PairTypesString
+    PairTypesString inf;
     struct QueuePairts * next; 
-} QueuePairts;
+    struct QueuePairts * last;
 
-typedef struct QueuePairspts{
-    Pairspts inf;
-    bool initialized;
+    void (*print)(struct QueuePairts * text);
+
+} QueuePairTypesString;
+
+typedef struct QueuePairspts{ // Queue what has PairStringParirTypesString
+    PairStringPairTypesString inf;
     struct QueuePairspts * next; 
-} QueuePairspts;
+    struct QueuePairspts * last;
 
-#define QUEUEINT_INIT {0, false, NULL}
-#define QUEUESTRING_INIT {NULL, false, NULL}
-#define QUEUEQS_INIT {NULL, false, NULL}
-#define QUEUEPTS_INIT {PAIRTS_NOPAIRTS, false, NULL}
-#define QUEUEPSS_INIT {PAIRSS_NOPAIRSS, false, NULL,}
+    void (*print)(struct QueuePairspts * text);
+
+} QueuePairStringPairTypesString;
+
+#define QUEUEINT_INIT {0, NULL, NULL, printQueueInt, addToQueueInt}
+#define QUEUESTRING_INIT {NULL, NULL, NULL, printQueueString}
+#define QUEUEQS_INIT {NULL, NULL, NULL, NULL}
+#define QUEUEPTS_INIT {PAIRTYPESSTRING_NOPAI, NULL, NULL, printQueuePairts}
+#define QUEUEPSS_INIT {PAIRSS_NOPAIR, NULL, NULL, printQueuePairspts}
 
 /*
 Функции добавление элементов в очередь
@@ -59,18 +76,20 @@ void addToQueueInt(QueueInt * q, int n){
     }
 
     QueueInt * lastq = q;
-    QueueInt * newqueue = (QueueInt*)malloc(sizeof(QueueInt));
-    newqueue->inf = n;
-    newqueue->next = NULL;
-    
-    while (lastq->next != NULL)
-    {
-        lastq = lastq->next;
-    }
 
-    if (lastq->initialized != false) {lastq->next = newqueue;}    
-    else {q->inf = n; q->initialized = true;}
-    
+    if (lastq->last == NULL){
+        lastq->inf = n;
+        lastq->last = lastq;
+    }
+    else{
+        QueueInt * newqueue = (QueueInt*)malloc(sizeof(QueueInt));
+        
+        newqueue->inf = n;
+        newqueue->next = NULL;
+
+        lastq->last->next = newqueue;
+        lastq->last = newqueue;
+    }    
 }
 
 void addToQueueString(QueueString *q, char * n) { 
@@ -79,64 +98,76 @@ void addToQueueString(QueueString *q, char * n) {
         return;
     }
 
-    QueueString * last = q;
-    QueueString  * newqueue = (QueueString*)malloc(sizeof(QueueString));
+    QueueString * lastq = q;
+    
 
-    newqueue->inf = strdup(n);
-    newqueue->initialized = true;
-    newqueue->next = NULL;
-
-    while(last -> next != NULL){
-        last = last->next;
-    }
-
-    if(q->initialized){
-        last->next = newqueue;
+    if (lastq->last == NULL){
+        lastq->inf = n;
+        lastq->last = lastq;
     }
     else{
-        q->inf = strdup(n);
-        q->initialized = true;
+        QueueString  * newqueue = (QueueString*)malloc(sizeof(QueueString));
+
+        newqueue->inf = strdup(n);
+        newqueue->next = NULL;
+        newqueue->last = q;
+
+        lastq->last->next = newqueue;
+        lastq->last = newqueue;
     }
+
 }
 
-void addToQueuePairts(QueuePairts *q, Pairts n) { 
+void addToQueuePairTS(QueuePairTypesString *q, PairTypesString n) { 
+    
     if(q == NULL){
         MWARNING
         return;
     }
 
-    QueuePairts * lastq = q;
-    QueuePairts * newqueue = (QueuePairts*)malloc(sizeof(QueuePairts));
-    newqueue->inf = n;
-    newqueue->next = NULL;
+    QueuePairTypesString * lastq = q;
     
-    while (lastq->next != NULL)
-    {
-        lastq = lastq->next;
+    
+    if (lastq->last == NULL){
+        lastq->inf = n;
+        lastq->last = lastq;
+    }
+    else{
+        QueuePairTypesString * newqueue = (QueuePairTypesString*)malloc(sizeof(QueuePairTypesString));
+    
+        newqueue->inf = n;
+        newqueue->next = NULL;
+        newqueue->last = q;
+
+        lastq->last->next = newqueue;
+        lastq->last = newqueue;
     }
 
-    if (lastq->initialized != false) {lastq->next = newqueue;}    
-    else {q->inf = n; q->initialized = true;}
 }
 
-void addToQueuePairspts(QueuePairspts *q, Pairspts n) { 
+void addToQueuePairSPTS(QueuePairStringPairTypesString *q, PairStringPairTypesString n) { 
     if(q == NULL){
         MWARNING
         return;
     }
 
-    QueuePairss * lastq = q;
-    QueuePairss * newqueue = (QueuePairspts*)malloc(sizeof(QueuePairss));
-    newqueue->inf = n;
-    newqueue->next = NULL;
+    QueuePairStringPairTypesString * lastq = q;
     
-    while (lastq->next != NULL)
-    {
-        lastq = lastq->next;
+    
+    if (lastq->last == NULL){
+        lastq->inf = n;
+        lastq->last = lastq;
+    }
+    else{
+        QueuePairStringPairTypesString * newqueue = (QueuePairStringPairTypesString*)malloc(sizeof(QueuePairStringPairTypesString));
+    
+        newqueue->inf = n;
+        newqueue->next = NULL;
+
+        lastq->last->next = newqueue;
+        lastq->last = newqueue;
     }
 
-    if (lastq->initialized != false) {lastq->next = newqueue;}    
-    else {q->inf = n; q->initialized = true;}
 }
 /*
 Функции для отображения
@@ -144,7 +175,7 @@ Display functions
 */
 
 void printQueueInt(QueueInt * q){
-    if (!q->initialized){
+    if (!q->last){
         puts("[]");
         return;
     }
@@ -160,7 +191,7 @@ void printQueueInt(QueueInt * q){
 }
 
 void printQueueString(QueueString *q) {
-    if (!q->initialized){
+    if (!q->last){
         puts("[]");
         return;
     }
@@ -175,13 +206,13 @@ void printQueueString(QueueString *q) {
     printf("]\n");
 }
 
-void printQueuePairts(QueuePairts *q) {
-    if (!q->initialized){
+void printQueuePairts(QueuePairTypesString *q) {
+    if (!q->last){
         puts("[]");
         return;
     }
     
-    QueuePairts *lastq = q;
+    QueuePairTypesString *lastq = q;
     printf("[");
     while (lastq != NULL) {
         printf("(%s , \"%s\")", get_name(lastq->inf.first), lastq->inf.second);
@@ -191,13 +222,13 @@ void printQueuePairts(QueuePairts *q) {
     printf("]\n");
 }
 
-void printQueuePairss(QueuePairss *q) {
-    if (!q->initialized){
+void printQueuePairspts(QueuePairStringPairTypesString *q) {
+    if (!q->last){
         puts("[]");
         return;
     }
     
-    QueuePairss *lastq = q;
+    QueuePairStringPairTypesString *lastq = q;
     printf("[");
     while (lastq != NULL) {
         printf("(%s , \"%s\")", lastq->inf.first, lastq->inf.second);
@@ -213,9 +244,8 @@ Get functions
 */
 
 int getInt(QueueInt * q){
-    if (q == NULL) {
+    if (!q->last) {
         puts("Queue is empty!");
-        q->initialized = false;
         return 0;
     }
     
@@ -226,16 +256,15 @@ int getInt(QueueInt * q){
     }
     else{ 
         q->inf = 0;
-        q->initialized = false;
+        q->last = NULL;
     }
 
     return newnum;
 }
 
 char * getString(QueueString * q){
-    if (q == NULL) {
+    if (!q->last) {
         puts("Queue is empty!");
-        q->initialized = false;
         return "\0";
     }
     
@@ -246,50 +275,48 @@ char * getString(QueueString * q){
     }
     else{ 
         q->inf = NULL;
-        q->initialized = false;
+        q->last = NULL;
     }
 
     return newstr;
 }
 
-Pairts getPairts(QueuePairts * q){
-    if (q == NULL) {
+PairTypesString getPairts(QueuePairTypesString * q){
+    if (!q->last) {
         puts("Queue is not exists!");
-        q->initialized = false;
-        Pairts newpair = {TYPE_NOTYPE, NULL};
+        PairTypesString newpair = {TYPE_NOTYPE, NULL};
         return newpair;
     }
 
-    Pairts newpair = q->inf;
+    PairTypesString newpair = q->inf;
     if (q->next != NULL){
         q->inf = q->next->inf;
         q->next = q->next->next;
     }
     else{
-        Pairts temp = {TYPE_NOTYPE, NULL}; 
+        PairTypesString temp = {TYPE_NOTYPE, NULL}; 
         q->inf = temp;
-        q->initialized = false;
+        q->last = NULL;
     }
     return newpair;
 }
 
-Pairss getPairss(QueuePairss * q){
-    if (q == NULL) {
+PairStringPairTypesString getPairss(QueuePairStringPairTypesString * q){
+    if (!q->last) {
         puts("Queue is not exists!");
-        q->initialized = false;
-        Pairss newpair = {NULL, NULL};
+        PairStringPairTypesString newpair = PAIRSTRINGPAIRTYPESSTRING_NOPAIT;
         return newpair;
     }
 
-    Pairss newpair = q->inf;
+    PairStringPairTypesString newpair = q->inf;
     if (q->next != NULL){
         q->inf = q->next->inf;
         q->next = q->next->next;
     }
     else{
-        Pairss temp = {NULL, NULL}; 
+        PairStringPairTypesString temp = PAIRSTRINGPAIRTYPESSTRING_NOPAIT; 
         q->inf = temp;
-        q->initialized = false;
+        q->last = NULL;
     }
     return newpair;
 }

@@ -45,12 +45,7 @@ int main(void){
     
     */
     //hashmap* memoryFunctrion = hashmap_create();
-    QueuePairts functions_memory = QUEUEPTS_INIT;
-
-    printQueuePairts(&functions_memory);
-
-    QueuePairss tempp = QUEUEPSS_INIT;
-    printQueuePairss(&tempp);
+    
 
     return 0;
 }

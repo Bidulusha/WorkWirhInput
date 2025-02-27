@@ -5,27 +5,28 @@
 typedef struct {
     int first;
     int second;
-} Pairii;
+} PairIntInt;
 
 typedef struct{
     int first;
     char * second;
-} Pairis;
+} PairIntSting;
 
 typedef struct {
     char * first;
     int second;
-} Pairsi;
+} PairStringInt;
 
 typedef struct{
     VariablesTypes first;
     char * second;
-} Pairts;
+} PairTypesString;
 
 typedef struct{
     char * first;
-    Pairts second;
-} Pairspts;
+    PairTypesString second;
+} PairStringPairTypesString;
 
-#define PAIRTS_NOPAIRTS {TYPE_NOTYPE, NULL}
-#define PAIRSS_NOPAIRSS {NULL, NULL}
+#define PAIRTYPESTRING_NOPAIR {TYPE_NOTYPE, NULL}
+#define PAIRSTRINGSTRING_NOPAIR {NULL, NULL}
+#define PAIRSTRINGPAIRTYPESSTRING_NOPAIT {NULL, PAIRTYPESTRING_NOPAIR}

@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\cFiles",
+    "\\cFiles\\memory",
+    "\\cFiles\\objects",
+    "\\cFiles\\objects\\enums",
+    "\\cFiles\\objects\\Functions",
+    "\\cFiles\\objects\\pseudoclasses",
+    "\\cFiles\\objects\\structures"
+  ],
+  "SelectedNode": "\\cFiles\\compiler.c",
+  "PreviewInSolutionExplorer": false
+}
